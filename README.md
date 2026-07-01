@@ -57,4 +57,4 @@ See [`artemis-transmission-protocol/SKILL.md`](./artemis-transmission-protocol/S
 
 ## License
 
-MIT. See [LICENSE](./LICENSE).
+See [LICENSE](./LICENSE).
