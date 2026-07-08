@@ -1,0 +1,37 @@
+{
+  "name": "artemis-skills",
+  "owner": {
+    "name": "Quantum Harmony LLC",
+    "url": "https://github.com/AgenticGovernace/QuantumHarmonyLLC---artemis-skills-anaconda"
+  },
+  "metadata": {
+    "description": "Artemis City skills and plugins for Claude Code and Anaconda Agent Studio.",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "ramble-on",
+      "source": "./plugins",
+      "description": "Signal translation layer for fast, non-linear thinkers. Converts raw rambles, voice-note transcripts, and stream-of-consciousness input into polished notes, ATP blocks, or platform-ready posts — with a bundled MCP server for Notion KB context and voice-model retrieval.",
+      "version": "1.1.0",
+      "author": {
+        "name": "Quantum Harmony LLC"
+      },
+      "homepage": "https://github.com/AgenticGovernace/ramble_on",
+      "license": "MIT",
+      "keywords": ["writing", "translation", "atp", "notion", "voice", "publishing"]
+    },
+    {
+      "name": "artemis-transmission-protocol",
+      "source": "./plugins/artemis-transmission-protocol",
+      "description": "Structured agent-to-agent communication via the Artemis Transmission Protocol (ATP): a standardized header, scoped response modes, an Artemis persona layer, and a pre-seeded SQLite tag registry.",
+      "version": "1.1.0",
+      "author": {
+        "name": "Quantum Harmony LLC"
+      },
+      "homepage": "https://artemiscity.com",
+      "license": "Apache-2.0",
+      "keywords": ["atp", "artemis", "agent-protocol", "multi-agent", "orchestration", "communication-protocol"]
+    }
+  ]
+}
