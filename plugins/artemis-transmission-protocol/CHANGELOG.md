@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+- Packaged for Anaconda Agent Studio; docs now cover import via GitHub (owner `AgenticGovernace`,
+  repo `QuantumHarmonyLLC---artemis-skills-anaconda`) alongside Claude usage.
+
 ## 1.1.0
 - Fixed `persona.py` reference from a hardcoded absolute path to the bundled `scripts/persona.py`
   (portable import via `CLAUDE_SKILL_DIR`).

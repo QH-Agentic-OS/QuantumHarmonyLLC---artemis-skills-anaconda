@@ -1,8 +1,9 @@
 # Artemis Transmission Protocol (ATP)
 
-A Claude Code plugin that packages the **Artemis Transmission Protocol** — a standardized
+An agent skill that packages the **Artemis Transmission Protocol** — a standardized
 header and scoped response system for normalizing context and coordinating agent-to-agent
-communication.
+communication. Packaged for **Anaconda Agent Studio** and format-compatible with Claude
+(same `SKILL.md`, importable in both).
 
 ## What it provides
 
@@ -32,8 +33,24 @@ artemis-transmission-protocol/
 ```
 
 The skill's invocation name comes from the `name` field in `SKILL.md` frontmatter, so it stays
-stable across plugin updates. Once installed, invoke it by mentioning ATP / the Artemis
+stable across updates. Once installed, invoke it by mentioning ATP / the Artemis
 protocol, or by asking for a multi-step or agent-to-agent task.
+
+## Install
+
+### Anaconda Agent Studio
+Agent Studio → **Add-ons** → **Skills** → **Add**, then enter owner `AgenticGovernace`,
+repository `QuantumHarmonyLLC---artemis-skills-anaconda`, skill name
+`artemis-transmission-protocol`. See the [repo README](../../README.md) for the full walkthrough
+(catalog, security scan, enabling on an agent).
+
+### Claude
+Copy the `skills/artemis-transmission-protocol/` folder into `~/.claude/skills/`, or add the repo
+as a plugin marketplace:
+
+```
+/plugin marketplace add https://github.com/AgenticGovernace/QuantumHarmonyLLC---artemis-skills-anaconda.git
+```
 
 ## License
 

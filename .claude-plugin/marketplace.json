@@ -10,16 +10,16 @@
   },
   "plugins": [
     {
-      "name": "ramble-on",
-      "source": "./plugins",
-      "description": "Signal translation layer for fast, non-linear thinkers. Converts raw rambles, voice-note transcripts, and stream-of-consciousness input into polished notes, ATP blocks, or platform-ready posts — with a bundled MCP server for Notion KB context and voice-model retrieval.",
-      "version": "1.1.0",
+      "name": "anaconda-agent-studio",
+      "source": "./plugins/anaconda-agent-studio",
+      "description": "Scaffold, configure, and ship agents for Anaconda Agent Studio: agent.yaml/pixi.toml layout, @tool authoring on anaconda_agent_runtime, MCP tool servers, multi-agent orchestration, and migrating existing Claude skills into the Agent Studio catalog.",
+      "version": "1.0.0",
       "author": {
         "name": "Quantum Harmony LLC"
       },
-      "homepage": "https://github.com/AgenticGovernace/ramble_on",
-      "license": "MIT",
-      "keywords": ["writing", "translation", "atp", "notion", "voice", "publishing"]
+      "homepage": "https://artemiscity.com",
+      "license": "Apache-2.0",
+      "keywords": ["anaconda", "agent-studio", "scaffolding", "mcp", "skills", "orchestration"]
     },
     {
       "name": "artemis-transmission-protocol",
