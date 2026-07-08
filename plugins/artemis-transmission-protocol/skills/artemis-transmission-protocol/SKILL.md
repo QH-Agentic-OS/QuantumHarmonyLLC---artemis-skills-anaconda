@@ -1,6 +1,9 @@
 ---
 name: artemis-transmission-protocol
-description: Structured communication using the Artemis Transmission Protocol (ATP). Use whenever the user mentions ATP, the Artemis Transmission Protocol, asks for a structured agent-to-agent header, or pastes a raw prompt with "make this ATP" / "add the ATP header" / "format this as ATP." Also use when an agent is about to emit an inter-agent MCP call and the response should be wrapped in a normalized header for downstream agents. Especially relevant when the active agent persona is one of Artemis-Oracle, Compsuite, Packrat, Compressor, or Codex, or when running inside Anaconda Agent Studio where agents call each other over MCP and benefit from a shared envelope.
+description: Structured communication using the Artemis Transmission Protocol (ATP). Use when the user requests ATP/Artemis protocol, when a task needs multi-step execution, or for agent-to-agent coordination that benefits from a standardized header and scoped response formatting.
+license: Apache-2.0
+metadata:
+  version: 1.1.0
 ---
 
 # Artemis Transmission Protocol (ATP)
@@ -50,6 +53,7 @@ Use this exact order and tag names with double brackets:
 7. **Apply persona formatting** based on Action Type → ResponseMode mapping (see Persona Integration below).
 
 ## Persona Integration
+**Source**: `scripts/persona.py` (bundled with this skill). Always reference it relative to the skill directory so it resolves wherever the skill is installed — personal, project, plugin, API code-execution sandbox, or Claude.ai upload. In Claude Code, `${CLAUDE_SKILL_DIR}/scripts/persona.py` resolves at any install level.
 
 ### ATP Action Type → Persona ResponseMode Mapping
 | ATP Action Type | Persona ResponseMode | Behavior |
@@ -70,11 +74,17 @@ Use this exact order and tag names with double brackets:
 | `Commit` | `TECHNICAL` |
 
 ### Using ArtemisPersona in Responses
-
-The `ArtemisPersona` class lives in `references/persona.py`. Load it on demand when an agent needs to programmatically frame responses.
-
 ```python
-from references.persona import ArtemisPersona, ResponseMode
+import os
+import sys
+
+# persona.py ships in this skill's scripts/ directory. Add it to the path so the
+# import resolves wherever the skill is installed. In Claude Code, CLAUDE_SKILL_DIR
+# points at the skill root; otherwise fall back to the current working directory.
+skill_dir = os.environ.get("CLAUDE_SKILL_DIR", os.getcwd())
+sys.path.insert(0, os.path.join(skill_dir, "scripts"))
+
+from persona import ArtemisPersona, ResponseMode
 
 # Initialize persona
 persona = ArtemisPersona()
@@ -113,7 +123,7 @@ recent = persona.get_recent_context(count=5)  # Last 5 contexts
 ```
 
 ## Tag Tracking and Evolution
-Maintain a SQLite tag registry to track ATP tags and their definitions over time. Use `references/atp_schema.sql` to initialize the database when asked to implement or update the registry. Record any newly proposed tags and their rationale.
+A pre-seeded SQLite registry ships at `assets/atp_registry.db` (~29 tags covering the header fields and their known values). Read and update that database to track ATP tags and their definitions over time, recording any newly proposed tag with its rationale and source context. Use `assets/atp_schema.sql` only to recreate the registry from scratch or to apply a schema change — it is the schema, not the data, so do not overwrite the shipped database with it.
 
 ## Examples
 If the user says: "Review my git config and ssh setup," respond with an ATP header inferred from the prompt, then provide the review steps or plan depending on `Action Type`.
@@ -122,22 +132,16 @@ If the user says: "Review my git config and ssh setup," respond with an ATP head
 
 ## Resources
 
-### references/
-- `atp_schema.sql` — SQLite schema for tracking ATP tags and definitions.
-- `persona.py` — `ArtemisPersona` class with:
+### scripts/
+- `persona.py` — `ArtemisPersona` class:
   - `ResponseMode` enum (REFLECTIVE, ARCHITECTURAL, CONVERSATIONAL, TECHNICAL, POETIC)
   - `RESPONSE_PATTERNS` — phrase banks per mode
   - `format_response()` — applies persona framing to content
-  - `get_personality_context()` — returns injectable system prompt
+  - `get_personality_context()` — returns an injectable system prompt for agent-to-agent use
   - `context_history` — rolling 50-item memory buffer
-- `reflection.py` — Reflection engine and concept graph (loaded for deeper synthesis tasks)
-- `semantic_tagging.py` — Tag extraction and citation tracking (loaded when ATP needs to track provenance)
+- `reflection.py` — `ReflectionEngine` + `ConceptGraph`: extract concepts from conversation text, cluster related ideas, and synthesize a narrative. Reach for this on `Mode: Synthesize` or `Action Type: Reflect`.
+- `semantic_tagging.py` — `SemanticTagger` + `Citation`: tag files/concepts/agents, pull `#tags` and citations out of text, and emit tag summaries. Use to populate or cross-reference the tag registry.
 
-## Notes for Anaconda Agent Studio
-
-When this skill runs inside an Agent Studio agent:
-
-- The `references/` Python files are reachable from the sandbox. Import them with paths relative to the skill folder.
-- The ATP header is the right surface for **inter-agent MCP calls**: when agent A calls agent B over the SSE endpoint, A's outgoing prompt should be wrapped in an ATP header so B's response is scoped correctly.
-- Persona traits (REFLECTIVE / ARCHITECTURAL / TECHNICAL / CONVERSATIONAL / POETIC) map cleanly to Agent Studio agent specializations: one agent per persona is a sensible pattern when you want the orchestration layer to reflect ATP modes.
-- The `atp_schema.sql` registry can be backed by a SQLite database mounted into the agent's sandbox (`mounts:` in `agent.yaml`).
+### assets/
+- `atp_registry.db` — pre-seeded SQLite registry of ATP tags and definitions (read/update at runtime).
+- `atp_schema.sql` — schema used to (re)create or migrate the registry database.

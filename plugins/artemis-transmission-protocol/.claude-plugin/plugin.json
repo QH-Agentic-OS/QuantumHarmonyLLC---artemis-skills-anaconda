@@ -1,0 +1,18 @@
+{
+  "name": "artemis-transmission-protocol",
+  "version": "1.1.0",
+  "description": "Structured agent-to-agent communication via the Artemis Transmission Protocol (ATP): a standardized header, scoped response modes, an Artemis persona layer, and a pre-seeded SQLite tag registry.",
+  "author": {
+    "name": "Quantum Harmony LLC"
+  },
+  "homepage": "https://artemiscity.com",
+  "license": "Apache-2.0",
+  "keywords": [
+    "atp",
+    "artemis",
+    "agent-protocol",
+    "multi-agent",
+    "orchestration",
+    "communication-protocol"
+  ]
+}
