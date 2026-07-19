@@ -1,0 +1,43 @@
+# =============================================================================
+# Anaconda Agent Studio — pixi.toml template
+# =============================================================================
+# Pixi is Anaconda's package manager. Agent Studio uses it to manage the
+# Python environment for an agent's tools.
+#
+# Most of the time, you do NOT hand-edit this file — Agent Studio's
+# "Dependencies" dialog in the Python Tools editor manages it for you.
+# Hand-edit only when:
+#   - bootstrapping the project before Agent Studio touches it
+#   - pinning to a specific anaconda_agent_runtime wheel for offline use
+#   - adding a dep Agent Studio's UI doesn't expose cleanly
+# =============================================================================
+
+[project]
+name = "<AGENT_NAME>"
+version = "0.1.0"
+description = "<ONE_LINE_DESCRIPTION>"
+authors = ["<YOUR_NAME> <<YOUR_EMAIL>>"]
+channels = ["conda-forge", "anaconda"]
+platforms = ["osx-arm64", "osx-64", "linux-64", "win-64"]  # adjust as needed
+
+[dependencies]
+python = ">=3.11,<3.13"
+
+# The Agent Studio runtime. Two options:
+#
+# Option A — pull from local wheel (offline-friendly):
+[pypi-dependencies]
+anaconda_agent_runtime = { path = "packages/anaconda_agent_runtime-0.1.0-py3-none-any.whl" }
+
+# Option B — pull from PyPI (online; comment out option A above and uncomment):
+# [pypi-dependencies]
+# anaconda_agent_runtime = ">=0.1.0"
+
+# Add tool deps below as the agent's Python tools require them.
+# Prefer conda packages where available, pypi otherwise.
+
+[tasks]
+# Tasks Pixi can run. Agent Studio doesn't require any tasks; they're for
+# developer convenience.
+test = "python -m pytest tests/"
+lint = "ruff check tools/"

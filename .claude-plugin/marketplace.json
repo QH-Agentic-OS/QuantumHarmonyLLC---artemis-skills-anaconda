@@ -1,0 +1,20 @@
+{
+  "name": "artemis-skills-anaconda",
+  "owner": {
+    "name": "QuantumHarmony LLC",
+    "url": "https://github.com/AgenticGovernace"
+  },
+  "metadata": {
+    "description": "Artemis City skills for Anaconda Agent Studio and Claude — one marketplace, both ecosystems.",
+    "version": "0.1.0"
+  },
+  "plugins": [
+    {
+      "name": "artemis-anaconda-skills",
+      "source": "./",
+      "description": "Scaffold, configure, and ship agents for Anaconda Agent Studio. Includes the anaconda-agent-studio skill; more Artemis City skills (validators, reflection, semantic tagging) to come.",
+      "category": "development",
+      "keywords": ["anaconda", "agent-studio", "artemis", "skills"]
+    }
+  ]
+}
