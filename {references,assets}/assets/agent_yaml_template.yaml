@@ -1,0 +1,90 @@
+# =============================================================================
+# Anaconda Agent Studio — agent.yaml template
+# =============================================================================
+# Replace <ALL_CAPS_PLACEHOLDERS> and delete sections you don't need.
+# Sections are ordered top-to-bottom by frequency of editing.
+# =============================================================================
+
+name: <AGENT_NAME>                    # lowercase-with-hyphens, shown on Agents page
+description: <ONE_LINE_DESCRIPTION>   # tooltip-length, ~80 chars max
+
+# -----------------------------------------------------------------------------
+# AI provider — which model powers the agent
+# -----------------------------------------------------------------------------
+ai_provider:
+  provider: anaconda                  # anaconda | anaconda-desktop | anthropic | openai | google | groq | custom
+  model: claude-sonnet-4-6            # must exist in the chosen provider
+  temperature: 0.7                    # 0.0 (deterministic) ... 2.0 (creative); 0.2 for analytical, 0.7 default
+  max_tokens: null                    # null = provider default; usually leave null
+  output_format: text                 # text | json
+
+# -----------------------------------------------------------------------------
+# Sandbox — Docker isolation (REQUIRES Docker Desktop installed)
+# -----------------------------------------------------------------------------
+sandbox:
+  enabled: true                       # set false only for trusted dev work
+  network: outbound                   # outbound | isolated | host  (outbound = can call out; isolated = no network)
+  cpus: 2                             # optional cap
+  memory_gb: 4                        # optional cap
+  mounts: []                          # see "Folder mounts" below; default = no host access
+  # mounts:
+  #   - host_path: ~/Downloads
+  #     sandbox_path: /work/input
+  #     mode: ro                      # ro | rw
+  #   - host_path: ~/Documents/output
+  #     sandbox_path: /work/output
+  #     mode: rw
+
+# -----------------------------------------------------------------------------
+# Knowledge — what the agent knows before any conversation starts
+# -----------------------------------------------------------------------------
+knowledge:
+  # The system prompt is the highest-leverage field in this file.
+  # Use it to set role, voice, and (critically) tool decision rules.
+  system_prompt: |
+    You are <AGENT_NAME>. <ONE_PARAGRAPH_DESCRIPTION_OF_ROLE_AND_VOICE>.
+
+    Tool decision rules:
+    - When the user asks for X, prefer the <tool_name> tool.
+    - When the user is ambiguous, ASK rather than guess.
+    - Never <FAILURE_MODE_YOU_WANT_TO_PREVENT>.
+
+  # Documents are inserted into context at the start of every conversation.
+  # 25 MB max each, but be much smaller — every KB costs latency and tokens per turn.
+  documents: []
+  # documents:
+  #   - documents/glossary.md
+  #   - documents/style-guide.md
+
+# -----------------------------------------------------------------------------
+# Capabilities — what the agent can do
+# -----------------------------------------------------------------------------
+capabilities:
+
+  # Python @tool modules from this project's tools/ directory.
+  python_tools: []
+  # python_tools:
+  #   - tools/main.py
+  #   - tools/data_ops.py
+
+  # MCP servers — registered in catalog (Add-ons → MCP) or locally in tools/mcp.json.
+  mcp_servers: []
+  # mcp_servers:
+  #   - name: github                          # name from the global catalog
+  #     ref: catalog
+  #     approvals:
+  #       github_create_issue: ask            # allow | ask | disabled
+  #       github_list_repos: allow
+  #   - name: local_postgres
+  #     ref: tools/mcp.json#local_postgres    # project-local server
+  #     approvals:
+  #       query: allow
+
+  # Skills — bundled in skills/ or from the global Add-ons catalog.
+  skills: []
+  # skills:
+  #   - skills/atp                            # bundled
+  #   - catalog:code-review                   # from Add-ons → Skills
+
+  # Plugins — Anaconda-shipped bundles (atlassian | miro | nteract | omni).
+  plugins: []

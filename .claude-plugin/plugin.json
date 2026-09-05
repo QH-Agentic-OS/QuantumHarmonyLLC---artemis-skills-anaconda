@@ -1,0 +1,13 @@
+{
+  "name": "artemis-anaconda-skills",
+  "description": "Anaconda Agent Studio skills from the Artemis City project — scaffold, configure, and ship agents for Agent Studio, with skills that are format-compatible with Claude.",
+  "version": "0.1.0",
+  "author": {
+    "name": "QuantumHarmony LLC",
+    "url": "https://github.com/AgenticGovernace"
+  },
+  "homepage": "https://github.com/AgenticGovernace/QuantumHarmonyLLC---artemis-skills-anaconda",
+  "repository": "https://github.com/AgenticGovernace/QuantumHarmonyLLC---artemis-skills-anaconda",
+  "license": "Apache-2.0",
+  "keywords": ["anaconda", "agent-studio", "artemis", "skills", "mcp"]
+}

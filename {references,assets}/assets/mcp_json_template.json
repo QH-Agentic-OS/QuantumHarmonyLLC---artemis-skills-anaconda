@@ -1,0 +1,30 @@
+{
+  "_comment": "Project-local MCP server configuration. Lives at tools/mcp.json. Referenced from agent.yaml as 'tools/mcp.json#<key>'. For desktop-wide servers shared across agents, use the global catalog (Add-ons → MCP) instead.",
+
+  "mcpServers": {
+
+    "_example_stdio_server": {
+      "_comment": "stdio server — Agent Studio launches this as a process.",
+      "type": "stdio",
+      "command": "uvx",
+      "args": ["mcp-server-postgres", "--connection-string", "postgresql://localhost/mydb"],
+      "env": {
+        "PGUSER": "agent_user"
+      },
+      "cwd": null
+    },
+
+    "_example_sse_server": {
+      "_comment": "SSE server — already running, Agent Studio connects to its URL. IMPORTANT: from inside the agent's Docker sandbox, 'localhost' is the container itself, not the host. Use host.docker.internal to reach services running on the host machine.",
+      "type": "sse",
+      "url": "http://host.docker.internal:7000/sse"
+    },
+
+    "_example_other_agent": {
+      "_comment": "Another Agent Studio agent exposed as an MCP server. Get this URL from the target agent's Connect dialog. Always use host.docker.internal, not localhost.",
+      "type": "sse",
+      "url": "http://host.docker.internal:NNNN/sse"
+    }
+
+  }
+}

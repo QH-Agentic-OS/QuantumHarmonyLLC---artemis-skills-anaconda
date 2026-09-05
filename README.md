@@ -2,7 +2,7 @@
 
 Agent skills from the Artemis City project, packaged for [Anaconda Agent Studio](https://www.anaconda.com/docs/tools/anaconda-desktop/agent-studio/main).
 
-Each skill uses the standard `SKILL.md` frontmatter, so the same folder is format-compatible with Claude — any skill here can be imported into Agent Studio and used in Claude without modification.
+This repo holds skills authored for [Anaconda Agent Studio](https://www.anaconda.com/docs/tools/anaconda-desktop/agent-studio/main). Each skill is also format-compatible with Claude (same SKILL.md frontmatter), so any skill in this repo can be used in both ecosystems. The repo doubles as a [Claude Code plugin marketplace](https://docs.claude.com/en/docs/claude-code/plugin-marketplaces), so the whole skill set can be integrated with two commands.
 
 ## Skills
 
@@ -38,7 +38,7 @@ QuantumHarmonyLLC---artemis-skills-anaconda/
             └── artemis-transmission-protocol/
                 ├── SKILL.md          # required: frontmatter (name, description) + body
                 ├── scripts/          # persona.py, reflection.py, semantic_tagging.py
-                └── assets/           # atp_registry.db, atp_schema.sql
+                \/assets/          # optional: templates, fonts, images
 ```
 
 The `SKILL.md` frontmatter requires `name` and `description`. The `name` is the stable invocation name (unchanged by folder moves); the `description` is the primary trigger — the agent reads it to decide whether to consult the skill.
@@ -50,31 +50,48 @@ Agent Studio imports skills directly from a public GitHub repo by scanning it fo
 1. Open Anaconda Desktop → enable **Agent Studio** under Beta features.
 2. Launch Agent Studio → **Add-ons** → **Skills** → **Add**.
 3. Enter:
-   - **Owner**: `AgenticGovernace`
-   - **Repository**: `QuantumHarmonyLLC---artemis-skills-anaconda`
+   - **Owner**: `AgenticGovernace` (or your GitHub username)
+   - **Repository**: `QuantumHarmonyLLC---artemis-skills-anaconda` (or `artemis-skills-anaconda`)
    - **Skill name**: `anaconda-agent-studio` or `artemis-transmission-protocol` (or leave blank to import every skill in the repo)
 4. **Add to Catalog.**
 5. (Recommended) Select the skill in the catalog → **Security** → **Start scan**. Enable **Deep scan with AI** if a provider is configured.
 6. To enable the skill on an agent: open the agent's config page → **Add Capability** → **Skill** → check the box → **Save**.
 
-## Installing a skill in Claude
+## Installing a skill in Claude manually
 
-The same `SKILL.md` works in Claude without modification. Drop the skill folder into wherever your Claude environment expects skills (typically `~/.claude/skills/<name>/`), or add the whole repo as a plugin marketplace:
+The same `SKILL.md` works in Claude without modification. You can add the repo as a marketplace (recommended) or install a skill manually.
+
+```bash
+# Add the repo as a Claude plugin marketplace
+/plugin marketplace add https://github.com/AgenticGovernace/QuantumHarmonyLLC---artemis-skills-anaconda.git
+
+# Or copy a single skill folder into Claude's skills directory:
+# cp -r plugins/<plugin-name>/skills/<skill-name>/ ~/.claude/skills/<skill-name>/
+```
+
+## Skill structure
+
+Skills live under `skills/`, the directory Claude Code plugins auto-discover. Each skill folder follows the standard layout:
 
 ```
-/plugin marketplace add https://github.com/AgenticGovernace/QuantumHarmonyLLC---artemis-skills-anaconda.git
+skills/<skill-name>/
+├── SKILL.md         # required: frontmatter (name, description) + body
+├── references/      # loaded on demand
+│   ├── *.md         # additional Markdown context
+│   └── *.py         # Python modules the skill points the agent at
+├── scripts/         # optional: executable helpers
+└── assets/          # optional: templates, fonts, images
+```
 ```
 
 ## Authoring a new skill
 
-1. Create a folder under `plugins/<plugin-name>/skills/<skill-name>/`.
-2. Add a `SKILL.md` with valid frontmatter (`name`, `description`).
-3. Put reference material in `references/` and executable helpers in `scripts/`; point the body at them.
-4. Register the plugin in [`.claude-plugin/marketplace.json`](./.claude-plugin/marketplace.json).
-5. Commit, push, re-import in Agent Studio.
+1. To author as a plugin: create a folder under `plugins/<plugin-name>/skills/<skill-name>/` and add a `SKILL.md` with valid frontmatter (`name`, `description`). Put reference material in `references/` and executable helpers in `scripts/`; point the body at them. Register the plugin in [`.claude-plugin/marketplace.json`](./.claude-plugin/marketplace.json) and commit/push.
 
-See [`artemis-transmission-protocol/SKILL.md`](./plugins/artemis-transmission-protocol/skills/artemis-transmission-protocol/SKILL.md) as a worked example.
+2. To author directly for Claude: create a folder under `skills/` with `SKILL.md` and the supporting `references/`, `scripts/`, and `assets/` as needed. Commit and push; Claude Code picks it up on the next marketplace update.
+
+See [`plugins/artemis-transmission-protocol/skills/artemis-transmission-protocol/SKILL.md`](./plugins/artemis-transmission-protocol/skills/artemis-transmission-protocol/SKILL.md) as a worked example.
 
 ## License
 
-See [LICENSE](./LICENSE).
+Apache-2.0. See [LICENSE](./LICENSE).
